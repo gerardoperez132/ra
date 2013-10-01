@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IFC - Check Axis</title>
+    <meta charset="UTF-8"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!--load helper libraries-->
+    <script type="text/javascript" src="/js/lib/jquery-2.0.2.min.js"></script>
+
+    <!--load 3D libraries-->
+    <script type="text/javascript" src="/js/lib/three.min.js"></script>
+    <script type="text/javascript" src="/js/lib/Detector.js"></script>
+    <script type="text/javascript" src="/js/lib/OrbitControls.js"></script>
+    <script type="text/javascript" src="/js/lib/BinaryLoader.js"></script>
+
+    <script type="text/javascript" src="/js/skarf.js"></script>
+
+    <script>
+
+    function checkWebGl() {
+        if (!Detector.webgl) {
+            $('div').remove();
+            Detector.addGetWebGLMessage();
+            throw new Error('Your browser does not seem to support WebGL');
+        }
+    }
+
+    var renderer, scene, camera;
+    var controls;
+    function setupScene() {
+
+        //create renderer
+        renderer = new THREE.WebGLRenderer({
+            antialias : true
+        });
+        renderer.setSize(640, 480);
+        renderer.setClearColor('#000000', 1);
+        var $container = $('#threejs-heading');
+        $container.after(renderer.domElement);
+
+        //create scene
+        scene = new THREE.Scene();
+
+        //create camera
+        camera = new THREE.PerspectiveCamera(35, renderer.domElement.width / renderer.domElement.height, 0.1, 1000);
+        camera.position.set(0.5, 0.5, 0.5);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        controls = new THREE.OrbitControls(camera);
+        controls.modifierKey = 'alt';
+        controls.userPanSpeed = 0.04;
+        controls.pan(new THREE.Vector3(0, 1, 0));
+        controls.pan(new THREE.Vector3(0, 1, 0));
+        scene.add(camera);
+
+        //setup lights
+        scene.add(new THREE.AmbientLight(0xffffff));
+
+        var light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(3, -3, 1);
+        scene.add(light);
+
+        light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(-0, 2, -1);
+        scene.add(light);
+
+        //load a model
+        var modelsJsonFile = '/resources/models/models_jsartoolkit_checkAxis.json';
+        var markerManager = new MarkerManager(modelsJsonFile);
+        var transform = new THREE.Object3D();
+        scene.add(transform);
+        markerManager.loadForMarker('22', transform, 1.0);
+
+        //add an axis to tell the direction
+        var localAxis = new THREE.AxisHelper(0.5);
+        scene.add(localAxis);
+    }
+
+    $(document).ready(function () {
+
+        //check for WebGL
+        checkWebGl();
+
+        console.log('Document is ready.');
+
+        //setup scene
+        setupScene();
+
+        function loop() {
+
+            controls.update();
+
+            // trigger the rendering
+            renderer.autoClear = false;
+            renderer.clear();
+            renderer.render(scene, camera);
+
+            requestAnimationFrame(loop);
+        }
+        loop();
+    });
+    </script>
+</head>
+<body>
+    <h2>Three.js Axis Check</h2>
+    <div class="caption">This is a test for checking the axes in Blender and in Three.js. Blender uses a Z-up coordinate system while Three.js uses a Y-up coordinate system.</div>
+    <div class="caption">This test loads in a dice model exported from Blender with the "Flip YZ" option turned on. The model appears with face 4 pointing up in +Y and face 5 pointing forward in +Z. This indicates that the "forward" direction in Blender is -Y.</div>
+    <div class="caption">As you can see below, both coordinate systems are right-handed, so no flipping of coordinate system has occured during the export.</div>
+    <div class="container" id="threejs-container">
+        <div class="caption" id="threejs-heading">three.js &lt;canvas&gt;</div>
+        <div class="caption">[ Alt+LMB: rotate ] [ Alt+MMB: pan ] [ Alt+RMB: zoom ]</div>
+    </div>
+    <div class="container" id="blender-container">
+        <div class="caption">Blender screenshot</div>
+        <img src="/resources/images/dice_blender.png">
+    </div>
+</body>
+</html>
