@@ -7,7 +7,7 @@
 		<title>Demo Realidad Aumentada</title>
 		<meta name="description" content="Demo de Realidad Aumentada" />
 		<meta name="keywords" content="navigation, menu, responsive, border, overlay, css transition" />
-		<meta name="author" content="Codrops" />
+		<meta name="author" content="@gerardoperez132" />
 		<link rel="shortcut icon" href="../favicon.ico">
 		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
@@ -21,7 +21,7 @@
 				<h1>Demo de Realidad Aumentada</h1>
 				<a href="#" id="bt-menu-trigger-out" class="bt-menu-trigger-out"><span class="bt-icon-alt icon-play"></span></a>
 				<nav class="codrops-demos">
-					<a class="current-demo" href="index6.html">Boton</a>
+					<a class="current-demo" href="#">Boton</a>
 				</nav>
 				<div class="codrops-related">
 					
@@ -29,6 +29,12 @@
 			</header>
 			<nav id="bt-menu" class="bt-menu">
 				<a href="#" class="bt-menu-trigger"><span>Menu</span></a>
+					<!-- Prueba -->
+					<div class="container" id="video-container">
+					<div class="caption">&lt;video&gt;</div>
+					<video id="mainVideo" width="640" height="480" autoplay="autoplay" muted="true"></video>
+					</div>
+					<!-- Prueba -->
 				<ul class="bt-menu-top">
 					<li><a href="#" class="bt-icon-alt icon-step-backward">Start</a></li>
 					<li><a href="#" class="bt-icon-alt icon-backward">Fast Backward</a></li>
@@ -47,6 +53,16 @@
 			</nav>
 		</div><!-- /container -->
 	</body>
+	
+	
 	<script src="js/classie.js"></script>
 	<script src="js/borderMenu.js"></script>
+	
+	<!--load webcam streaming libraries-->
+	<script type="text/javascript" src="js/webrtc_adapter.js"></script>
+	<script type="text/javascript" src="js/streamvideo.js"></script>
+
+	<!--load AR and 3D libraries-->
+	<script type="text/javascript" src="js/JSARToolKit.js"></script>
+	<script type="text/javascript" src="js/three.min.js"></script>
 </html>
